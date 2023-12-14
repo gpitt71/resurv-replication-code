@@ -13,24 +13,39 @@ You can obtain our results exectuting the scripts in this order.
 |_ ReSurv_cv_results
 |_ cross_validation_scripts 
    |_ simulation_0
-      |_ 
-      |_
+      |_ bayes_deepsurv.R 
+      |_ bayes_xgboost.R 
    |_ simulation_1
-      |_
-      |_
+      |_ bayes_deepsurv.R 
+      |_ bayes_xgboost.R 
    |_ simulation_2
-      |_
-      |_
+      |_ bayes_deepsurv.R 
+      |_ bayes_xgboost.R 
    |_ simulation_3
-      |_
-      |_
+      |_ bayes_deepsurv.R 
+      |_ bayes_xgboost.R 
    |_ simulation_4
-      |_
-      |_
+      |_ bayes_deepsurv.R 
+      |_ bayes_xgboost.R 
+|_ Fitting_results
+|_ latex_tables
+|_ Scoring_results
+|_ Scoring_datasets
+|_ Simulation_scripts
+   |_ simulation_cl_scoring1.R
+   |_ simulation_cl_scoring2.R
+   |_ simulation_fitting.R
+   |_ simulation_scoring.R
       
 ```
 
-The jobs were executed with the job scheduler Slurm.
+The jobs were executed with the job scheduler Slurm. In order to replicate our results the user should:
+
+1. Perform cross-validation for each scenario. 
+
+2. Fit and score the models. 
+
+
 
 Details on the R session, printed with the function `SessionInfo()`. 
 We refer to the version 1.0.0. of `ReSurv`.
