@@ -8,6 +8,7 @@ This repository has the following structure.
 
 You can obtain our results exectuting the scripts in this order.
 
+```
 | resurv-replication-code
 |_ ReSurv_cv_results
 |_ cross_validation_scripts 
@@ -26,6 +27,8 @@ You can obtain our results exectuting the scripts in this order.
    |_ simulation_4
       |_
       |_
+      
+```
 
 The jobs were executed with the job scheduler Slurm.
 
