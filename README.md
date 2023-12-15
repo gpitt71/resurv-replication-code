@@ -1,54 +1,86 @@
 # resurv-replication-code
 
 This repository contains the code to replicate the simulated case study of the manuscript A MACHINE LEARNING APPROACH BASED ON SURVIVAL ANALYSIS FOR IBNR FREQUENCIES IN NON-LIFE RESERVING.
+
 The computations for obtaining the results in the manuscript were performed on the ERDA cloud, see Appendix E of the manuscript. 
+
 We will not share the private data on which we performed the real data case study.
 
-This repository has the following structure.
-
-You can obtain our results exectuting the scripts in this order.
+This repository has the same structure as the repository that we used to obtain the results in the manuscript.
 
 ```
 | resurv-replication-code
-|_ ReSurv_cv_results
-|_ cross_validation_scripts 
-   |_ simulation_0
-      |_ bayes_deepsurv.R 
-      |_ bayes_xgboost.R 
-   |_ simulation_1
-      |_ bayes_deepsurv.R 
-      |_ bayes_xgboost.R 
-   |_ simulation_2
-      |_ bayes_deepsurv.R 
-      |_ bayes_xgboost.R 
-   |_ simulation_3
-      |_ bayes_deepsurv.R 
-      |_ bayes_xgboost.R 
-   |_ simulation_4
-      |_ bayes_deepsurv.R 
-      |_ bayes_xgboost.R 
-|_ Fitting_results
-|_ latex_tables
-|_ Scoring_results
-|_ Scoring_datasets
-|_ Simulation_scripts
-   |_ simulation_cl_scoring1.R
-   |_ simulation_cl_scoring2.R
-   |_ simulation_fitting.R
-   |_ simulation_scoring.R
+   |_ ReSurv_cv_results
+   |_ cross_validation_scripts 
+      |_ simulation_0
+         |_ bayes_deepsurv.R 
+         |_ bayes_xgboost.R 
+      |_ simulation_1
+         |_ bayes_deepsurv.R 
+         |_ bayes_xgboost.R 
+      |_ simulation_2
+         |_ bayes_deepsurv.R 
+         |_ bayes_xgboost.R 
+      |_ simulation_3
+         |_ bayes_deepsurv.R 
+         |_ bayes_xgboost.R 
+      |_ simulation_4
+         |_ bayes_deepsurv.R 
+         |_ bayes_xgboost.R 
+   |_ Fitting_results
+   |_ latex_tables
+   |_ Scoring_results
+   |_ Scoring_datasets
+   |_ Simulation_scripts
+      |_ simulation_cl_scoring1.R
+      |_ simulation_cl_scoring2.R
+      |_ simulation_fitting.R
+      |_ simulation_scoring.R
+      |_ latex_tables.R
+   |_ slurm_scripts
+      |_ slurm_job_init_cv.sh
+      |_ slurm_job_cv.sh
+      |_ simulation_fitting_scoring.sh
+      |_ simulation_fitting_scoring_slurm.sh
+
       
 ```
 
+We describe the folders below:
+
+|      Folder             |           Description                                                      |
+| :---------------------: |:--------------------------------------------------------------------------:|
+| `ReSurv_cv_results`     | Folder that contains the cross-validation output.                          |
+| `Fitting_results`       | Folder that containts fitted models for each data set in each scenario.    |
+| `Scoring_results`       | Folder that containts temporary files for scoring.                         |
+| `Scoring_datasets`      | Folder that containts temporary files for scoring.                         |
+| `Simulation_scripts`    | Folder that containts scripts for scoring chain ladder and ReSurv models.  |
+| `slurm_scripts`         | Folder that containts scripts for slurm.                                   |
+| `latex_tables`          | Folder that containts the paper's output.                                  |
+
+We describe the scripts below:
+
+|      Script                |    Description                                                  |
+| :------------------------: |:---------------------------------------------------------------:|
+| `simulation_cl_scoring1.R` | Script to fit and score CL.                                     |
+| `simulation_cl_scoring2.R` | Script to create CL scoring results comparable to other models. |
+| `simulation_fitting.R`     | Script to fit the models.                                       |
+| `simulation_scoring.R`     | Script to score the models.                                     |
+| `bayes_deepsurv.R`         | Script to tune NN hyperparameters.                              |
+| `bayes_xgboost.R`          | Script to tune XGB hyperparameters.                             |
+
+
 The jobs were executed with the job scheduler Slurm. In order to replicate our results the user should:
 
-1. Perform cross-validation for each scenario. 
+1. **Perform bayesian hyperparameters tuning for each dataset in each scenario**. Example `.sh` files for tuning the hyperparameters of simulation Alpha can be found in the folder `slurm_scripts`. Execute `sbatch ~ /slurm_job_init_cv.sh`. 
 
-2. Fit and score the models. 
+2. **Fit and score the models**. An example `.sh` file to fit and score CL and our models can also be found in the folder `slurm_scripts`. Execute `sbatch ~ /simulation_fitting_scoring_slurm.sh`.
 
+3. **Save the final results in a Latex friendly format**. This can be done using the `.R` file `latex_tables.R`
 
 
 Details on the R session, printed with the function `SessionInfo()`. 
-We refer to the version 1.0.0. of `ReSurv`.
+We refer to the version `1.0.0.` of `ReSurv`.
 
 ```
 R version 4.2.3 (2023-03-15)
