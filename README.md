@@ -42,6 +42,7 @@ This repository has the same structure as the repository that we used to obtain 
       |_ slurm_job_cv.sh
       |_ simulation_fitting_scoring.sh
       |_ simulation_fitting_scoring_slurm.sh
+   |_ heatmap_data
 
       
 ```
@@ -57,6 +58,7 @@ We describe the folders below:
 | `Simulation_scripts`    | Folder that containts scripts for scoring chain ladder and ReSurv models.  |
 | `slurm_scripts`         | Folder that containts scripts for slurm.                                   |
 | `latex_tables`          | Folder that containts the paper's output.                                  |
+| `heatmap_data`          | Folder that containts the data to plot the heatmap.                        |
 
 We describe the scripts below:
 
@@ -68,6 +70,7 @@ We describe the scripts below:
 | `simulation_scoring.R`     | Script to score the models.                                     |
 | `bayes_deepsurv.R`         | Script to tune NN hyperparameters.                              |
 | `bayes_xgboost.R`          | Script to tune XGB hyperparameters.                             |
+| `plot_heat_map.R`          | Script to plot the heatmap or $RE^{k,j}$                        |
 
 
 The jobs were executed with the job scheduler Slurm. In order to replicate our results the user should:
