@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10419198.svg)](https://doi.org/10.5281/zenodo.10419198)
+
 # resurv-replication-code
 
 This repository contains the code to replicate the simulated case study of the manuscript A MACHINE LEARNING APPROACH BASED ON SURVIVAL ANALYSIS FOR IBNR FREQUENCIES IN NON-LIFE RESERVING.
