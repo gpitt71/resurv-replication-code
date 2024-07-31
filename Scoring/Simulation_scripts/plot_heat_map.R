@@ -25,10 +25,9 @@ maximum.time <- function(years,
 
 
 
-
 construct_actual_expected <-function(resurv.predict_table){
   
-  resurv.predict <- readRDS(paste0( "~/Fitted_models/",resurv.predict_table))
+  resurv.predict <- readRDS(paste0( "~/Fitting_results/",resurv.predict_table))
   
   conversion_factor <- resurv.predict$ReSurvFit$IndividualData$conversion_factor
   
