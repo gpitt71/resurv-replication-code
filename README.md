@@ -2,7 +2,7 @@
 
 This repository contains the code to replicate the simulated case study of the manuscript A MACHINE LEARNING APPROACH BASED ON SURVIVAL ANALYSIS FOR IBNR FREQUENCIES IN NON-LIFE RESERVING.
 
-The computations for obtaining the results in the manuscript were performed on the ERDA cloud, see Appendix E of the manuscript. 
+The computations for obtaining the results in the manuscript were performed on the ERDA cloud, see Appendix `Computational Details` of the manuscript. 
 
 We will not share the private data on which we performed the real data case study.
 
@@ -83,7 +83,7 @@ The jobs were executed with the job scheduler Slurm. In order to replicate our r
 
 
 Details on the R session, printed with the function `SessionInfo()`. 
-We refer to the version `1.0.0.` of `ReSurv`.
+We refer to the version `0.0.1` of `ReSurv` that we used for the obtaining the paper's results. The initial release of `ReSurv` can be obtained at [this link.](https://github.com/edhofman/ReSurv/releases/tag/ReSurv_initial_release).
 
 ```
 R version 4.2.3 (2023-03-15)
