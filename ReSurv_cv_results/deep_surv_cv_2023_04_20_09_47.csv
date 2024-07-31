@@ -1,0 +1,3 @@
+"","num_layers","optim","activation","lr","xi","eps","tie","batch_size","early_stopping","patience","node_1","node_2","node_3","train.lkh","test.lkh"
+"1",2,"Adam","LeakyReLU",0.01,0,0,"Efron",1000,"TRUE",20,2,2,NA,5.70063104196028,5.70086791298606
+"2",3,"Adam","LeakyReLU",0.01,0,0,"Efron",1000,"TRUE",20,2,2,2,5.67280950546265,5.67267246246338

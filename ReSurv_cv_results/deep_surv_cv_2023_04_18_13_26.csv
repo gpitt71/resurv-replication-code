@@ -1,0 +1,10 @@
+"","num_layers","optim","activation","lr","xi","eps","tie","batch_size","early_stopping","patience","node_1","node_2","node_3","node_4","node_5","node_6","node_7","node_8","node_9","node_10","train.lkh","test.lkh"
+"1",2,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,NA,NA,NA,NA,NA,NA,NA,NA,5.92643245350231,6.0009105682373
+"2",3,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,NA,NA,NA,NA,NA,NA,NA,5.7744348526001,6.33842679804022
+"3",4,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,NA,NA,NA,NA,NA,NA,6.04143828478727,5.99286756515503
+"4",5,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,2,NA,NA,NA,NA,NA,5.8204888343811,6.41922707991167
+"5",6,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,2,2,NA,NA,NA,NA,6.19542689756914,6.03194379806519
+"6",7,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,2,2,2,NA,NA,NA,5.93045692443848,6.53064268285578
+"7",8,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,2,2,2,2,NA,NA,6.24380891973322,6.06142683029175
+"8",9,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,2,2,2,2,2,NA,5.92540397644043,6.72409077991139
+"9",10,"Adam","LeakyReLU",0.01,0,0.2,"Efron",1000,"TRUE",20,2,2,2,2,2,2,2,2,2,2,6.34895345080983,6.17626104354858

@@ -29,16 +29,17 @@ This repository has the same structure as the repository that we used to obtain 
       |_ simulation_4
          |_ bayes_deepsurv.R 
          |_ bayes_xgboost.R 
-   |_ Fitting_results
-   |_ latex_tables
-   |_ Scoring_results
-   |_ Scoring_datasets
-   |_ Simulation_scripts
-      |_ simulation_cl_scoring1.R
-      |_ simulation_cl_scoring2.R
-      |_ simulation_fitting.R
-      |_ simulation_scoring.R
-      |_ latex_tables.R
+   |_ Scoring
+      |_ Fitting_results
+      |_ latex_tables
+      |_ Scoring_results
+      |_ Scoring_datasets
+      |_ Simulation_scripts
+         |_ simulation_cl_scoring1.R
+         |_ simulation_cl_scoring2.R
+         |_ simulation_fitting.R
+         |_ simulation_scoring.R
+         |_ latex_tables.R
    |_ slurm_scripts
       |_ slurm_job_init_cv.sh
       |_ slurm_job_cv.sh

@@ -1,0 +1,5 @@
+"","num_layers","optim","activation","lr","xi","eps","tie","batch_size","early_stopping","patience","node_1","node_2","node_3","train.lkh","test.lkh"
+"1",2,"Adam","LeakyReLU",0.01,0,0,"Efron",1000,"TRUE",20,2,2,NA,5.70060293457725,5.70050285079262
+"2",3,"Adam","LeakyReLU",0.01,0,0,"Efron",1000,"TRUE",20,2,2,2,5.67266426086426,5.67284355163574
+"3",2,"Adam","LeakyReLU",0.01,0,0,"Efron",1000,"TRUE",20,5,5,NA,5.7007885759527,5.70088783177462
+"4",3,"Adam","LeakyReLU",0.01,0,0,"Efron",1000,"TRUE",20,5,5,5,5.67337827682495,5.67417421340942
