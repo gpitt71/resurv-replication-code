@@ -1,0 +1,1 @@
+# Folder that containts temporary files for scoring.  
