@@ -1,5 +1,6 @@
 library(ParBayesianOptimization)
 library(ReSurv)
+library(data.table)
 library(doParallel)
 
 cox_loss_objective2 <- function(preds,dtrain){
@@ -121,23 +122,27 @@ obj_func <- function(eta, max_depth, min_child_weight, subsample, lambda, alpha)
   #   # Use the Mean Absolute Percentage Error
   #   eval_metric = cox_evaluation_metrix)
   
-  xgbcv <- ReSurvCV(IndividualData=individual_data,
-                    model="xgboost",
-                    hparameters_grid=list(booster="gbtree",
-                                          eta=eta,
-                                          max_depth=max_depth,
-                                          subsample=subsample,
-                                          alpha=lambda,
-                                          lambda=alpha,
-                                          min_child_weight=min_child_weight),
-                    print_every_n = 1L,
-                    nrounds=500,
-                    verbose=F,
-                    verbose.cv=T,
-                    early_stopping_rounds = 30,
-                    folds=3,
-                    parallel=F,
-                    random_seed = as.integer(Sys.time()))
+  xgbcv <- ReSurvCV(
+    individual_data,
+    model = "XGBoost",
+    hparameters_grid = list(
+      booster = "gbtree",
+      eta = eta,
+      max_depth = max_depth,
+      subsample = subsample,
+      alpha = lambda,
+      lambda = alpha,
+      min_child_weight = min_child_weight
+    ),
+    print_every_n = 1L,
+    nrounds = 500,
+    verbose = FALSE,
+    verbose.cv = TRUE,
+    early_stopping_rounds = 30,
+    folds = 3,
+    parallel = FALSE,
+    random_seed = as.integer(Sys.time())
+  )
   
   lst <- list(
     
@@ -167,7 +172,7 @@ cl <- makeCluster(50)
 registerDoParallel(cl)
 
 
-clusterEvalQ(cl, {library("ReSurv")} )
+clusterEvalQ(cl, {library("ReSurv"); library("data.table")} )
 
 
 for (i in seeds){
@@ -177,9 +182,9 @@ for (i in seeds){
                               scenario=0,
                               time_unit = 1/360,
                               years = 4,
-                              yearly_exposure = 200)
-    
-  individual_data <- IndividualData(data = input_data,
+                              period_exposure = 200)
+
+  individual_data <- IndividualDataPP(input_data,
                                     id=NULL,
                                     categorical_features = c("claim_type"),
                                     continuous_features = "AP_i",
