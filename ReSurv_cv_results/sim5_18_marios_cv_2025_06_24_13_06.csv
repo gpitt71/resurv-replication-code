@@ -1,0 +1,4 @@
+"","Epoch","Iteration","number_of_neurons","number_of_layers","gpUtility","acqOptimum","inBounds","Elapsed","Score","train_loss","errorMessage"
+"1",0,1,6,1,NA,FALSE,TRUE,181.621,0.306640433628945,0.00987548180373778,NA
+"2",0,2,2,2,NA,FALSE,TRUE,184.169,0.00523018861468927,0.0096740357898625,NA
+"3",0,3,9,2,NA,FALSE,TRUE,111.954,8.37358371427399e-05,6.6986941601499e-05,NA
