@@ -8,6 +8,35 @@ library(fastDummies)
 library(reticulate)
 library(keras)
 
+resurv_conda_env <- Sys.getenv("RESURV_CONDA_ENV", unset = NA)
+
+get_script_dir <- function() {
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- cmd_args[grepl("^--file=", cmd_args)]
+  if (length(file_arg) > 0) {
+    return(dirname(normalizePath(sub("^--file=", "", file_arg),
+                                  winslash = "/",
+                                  mustWork = TRUE)))
+  }
+  getwd()
+}
+
+script_dir <- get_script_dir()
+project_root <- Sys.getenv(
+  "RESURV_PROJECT_ROOT",
+  unset = normalizePath(file.path(script_dir, "..", ".."),
+                        winslash = "/",
+                        mustWork = FALSE)
+)
+
+cv_results_dir <- Sys.getenv(
+  "RESURV_CV_RESULTS",
+  unset = file.path(project_root, "ReSurv_cv_results")
+)
+if (!dir.exists(cv_results_dir)) {
+  dir.create(cv_results_dir, recursive = TRUE, showWarnings = FALSE)
+}
+
 # Preprocess covariates
 ## utils
 MinMaxScaler <- function(x, na.rm = TRUE) {
@@ -93,7 +122,9 @@ nn_model_cv <- function(data,
                         continuous_features) {
 
 
-    reticulate::use_condaenv("/home/gabriele_pittarello_uniroma1_it/modi_mount/r_environ")
+    if (!is.na(resurv_conda_env) && nzchar(resurv_conda_env)) {
+      reticulate::use_condaenv(resurv_conda_env)
+    }
   y_data_columns <- paste0("DP", 1:max_dp)
   x_cat <- fastDummies::dummy_cols(data[,..categorical_features],
                       select_columns=categorical_features,
@@ -420,7 +451,10 @@ dt_target[, (common_cols):=dt_covariates[,..common_cols]]
   )
 
 
-  name = paste0("~/modi_mount/ReSurv_cv_results",  "/sim",scenario_number,"_",i,"_marios_cv_",format(Sys.time(), "%Y_%m_%d_%H:%M"),".csv")
+  name <- file.path(
+    cv_results_dir,
+    sprintf("sim%s_%s_marios_cv_%s.csv", scenario_number, i, format(Sys.time(), "%Y_%m_%d_%H:%M"))
+  )
 
   write.csv(bayes_out$scoreSummary, file = name)
 }

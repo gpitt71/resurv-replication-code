@@ -94,7 +94,7 @@ Platform: x86_64-conda-linux-gnu (64-bit)
 Running under: Ubuntu 22.04.3 LTS
 
 Matrix products: default
-BLAS/LAPACK: /home/gabriele_pittarello_uniroma1_it/modi_mount/r_environ/lib/libopenblasp-r0.3.25.so
+BLAS/LAPACK: <path to the BLAS library within the active conda environment>
 
 locale:
  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
