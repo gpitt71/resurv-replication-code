@@ -1,0 +1,2 @@
+are_tot,are_cal_q,are_cal_y,ei_r,m_crps,model,scenario,seed
+0.163896412116027,0.172219559611238,0.89442913117825,1.10889835845071,402.133408891434,deepsurv,gamma,6
