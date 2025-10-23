@@ -1,4 +1,44 @@
-reticulate::use_condaenv("/home/gabriele_pittarello_uniroma1_it/modi_mount/r_environ")
+resurv_conda_env <- Sys.getenv("RESURV_CONDA_ENV", unset = NA)
+if (!is.na(resurv_conda_env) && nzchar(resurv_conda_env)) {
+  reticulate::use_condaenv(resurv_conda_env)
+}
+
+get_script_dir <- function() {
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- cmd_args[grepl("^--file=", cmd_args)]
+  if (length(file_arg) > 0) {
+    return(dirname(normalizePath(sub("^--file=", "", file_arg),
+                                  winslash = "/",
+                                  mustWork = TRUE)))
+  }
+  getwd()
+}
+
+script_dir <- get_script_dir()
+project_root <- Sys.getenv(
+  "RESURV_PROJECT_ROOT",
+  unset = normalizePath(file.path(script_dir, "..", ".."),
+                        winslash = "/",
+                        mustWork = FALSE)
+)
+results_dir <- Sys.getenv(
+  "RESURV_SCORING_RESULTS",
+  unset = file.path(project_root, "Fitting_Scoring", "Scoring_results")
+)
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
+}
+fitting_results_dir <- Sys.getenv(
+  "RESURV_FITTING_RESULTS",
+  unset = file.path(project_root, "Fitting_Scoring", "Fitting_results")
+)
+if (!dir.exists(fitting_results_dir)) {
+  dir.create(fitting_results_dir, recursive = TRUE, showWarnings = FALSE)
+}
+cv_results_dir <- Sys.getenv(
+  "RESURV_CV_RESULTS",
+  unset = file.path(project_root, "ReSurv_cv_results")
+)
 
 torch <- reticulate::import("torch", delay_load = TRUE)
 torchtuples <- reticulate::import('torchtuples', delay_load = TRUE)
@@ -149,7 +189,14 @@ scenario_num=which(c('alpha','beta','gamma','delta','epsilon','zeta','eta')==sce
   resurv.fit.predict$fitting_time <- time
 
   if(save){
-    name = paste0("~/modi_mount/Scoring/Fitting_results",  "/sim",scenario,"_",seed,"_",model,"_",format(Sys.time(), "%Y_%m_%d_%H_%M"),".RData")
+    name <- file.path(
+      fitting_results_dir,
+      sprintf("sim%s_%s_%s_%s.RData",
+              scenario,
+              seed,
+              model,
+              format(Sys.time(), "%Y_%m_%d_%H_%M"))
+    )
     saveRDS(resurv.fit.predict, file=name)}
 
 
@@ -348,13 +395,15 @@ m_crps <- mean(crps$crps)
 
 
 
-  name = paste0("/home/gabriele_pittarello_uniroma1_it/modi_mount/Scoring/Scoring_results",
-                "/sim_in_chunks_",
-                scenario,
-                "_seed_",
-                seed,
-                "_",
-                format(Sys.time(), "%Y_%m_%d_%H:%M"),".csv")
+  name <- file.path(
+    results_dir,
+    sprintf(
+      "sim_in_chunks_%s_seed_%s_%s.csv",
+      scenario,
+      seed,
+      format(Sys.time(), "%Y_%m_%d_%H:%M")
+    )
+  )
 
 
   fwrite(data.table(are_tot=are_tot,
@@ -377,7 +426,7 @@ set.seed(1964)
 seeds<-1:5
 args = commandArgs(trailingOnly=TRUE)
 print(args)
-location <- "~/modi_mount/ReSurv_cv_results"
+location <- cv_results_dir
 
 names <- list.files(location)
 names_relevant <- names[substr(names,1,4) %in% c("sim0","sim1","sim2","sim3","sim4","sim5")]

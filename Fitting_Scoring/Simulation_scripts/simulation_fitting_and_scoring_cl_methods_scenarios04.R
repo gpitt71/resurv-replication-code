@@ -7,6 +7,41 @@ library(reticulate)
 # library(clmplus)
 # library(ChainLadder)
 
+resurv_conda_env <- Sys.getenv("RESURV_CONDA_ENV", unset = NA)
+if (!is.na(resurv_conda_env) && nzchar(resurv_conda_env)) {
+  reticulate::use_condaenv(resurv_conda_env)
+}
+
+get_script_dir <- function() {
+  cmd_args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- cmd_args[grepl("^--file=", cmd_args)]
+  if (length(file_arg) > 0) {
+    return(dirname(normalizePath(sub("^--file=", "", file_arg),
+                                  winslash = "/",
+                                  mustWork = TRUE)))
+  }
+  getwd()
+}
+
+script_dir <- get_script_dir()
+project_root <- Sys.getenv(
+  "RESURV_PROJECT_ROOT",
+  unset = normalizePath(file.path(script_dir, "..", ".."),
+                        winslash = "/",
+                        mustWork = FALSE)
+)
+results_dir <- Sys.getenv(
+  "RESURV_SCORING_RESULTS",
+  unset = file.path(project_root, "Fitting_Scoring", "Scoring_results")
+)
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
+}
+cv_results_dir <- Sys.getenv(
+  "RESURV_CV_RESULTS",
+  unset = file.path(project_root, "ReSurv_cv_results")
+)
+
 # Preprocess covariatesfile
 ## utils
 MinMaxScaler <- function(x, na.rm = TRUE) {
@@ -317,7 +352,7 @@ nn_model_fit_and_predict <- function(data,
 sim_fitting <- function(seed,scenario){
 
   # Set folder path
-  folder_path <- "~/modi_mount/ReSurv_cv_results/"
+  folder_path <- cv_results_dir
 
   # List all files in the folder with full path
   all_files <- list.files(path = folder_path, full.names = TRUE)
@@ -357,7 +392,8 @@ sim_fitting <- function(seed,scenario){
   seed_num=seed #datatable non sense. Confusion with outside environment
 
 
-  hps_mario <- fread( dt_latest[sim == scenario_num & seed == seed_num, file.path("~/modi_mount/ReSurv_cv_results/", file)])
+  hps_mario <- fread(dt_latest[sim == scenario_num & seed == seed_num,
+                               file.path(cv_results_dir, file)])
 
   # Extract number of layers and neurons from the configuration with minimum Score
   best_config <- hps_mario[which.min(Score), .(number_of_layers, number_of_neurons)]
@@ -365,7 +401,9 @@ sim_fitting <- function(seed,scenario){
   num_neurons <- best_config$number_of_neurons
 
 
-  reticulate::use_condaenv("/home/gabriele_pittarello_uniroma1_it/modi_mount/r_environ")
+  if (!is.na(resurv_conda_env) && nzchar(resurv_conda_env)) {
+    reticulate::use_condaenv(resurv_conda_env)
+  }
 
   input_data <- data_generator(
     random_seed = seed,
@@ -1099,13 +1137,15 @@ saved_ap_1_counts <- (nrow(input_data[AP==1,]))
     scenario=scenario,
     seed=seed )
 
-  name = paste0("/home/gabriele_pittarello_uniroma1_it/modi_mount/Scoring/Scoring_results",
-                "/sim_in_chunks_",
-                scenario,
-                "_seed_",
-                seed,
-                "_",
-                format(Sys.time(), "%Y_%m_%d_%H:%M"),".csv")
+  name <- file.path(
+    results_dir,
+    sprintf(
+      "sim_in_chunks_%s_seed_%s_%s.csv",
+      scenario,
+      seed,
+      format(Sys.time(), "%Y_%m_%d_%H:%M")
+    )
+  )
 
   fwrite(out,
          name)
