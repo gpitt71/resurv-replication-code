@@ -1,37 +1,41 @@
 library(ParBayesianOptimization)
 library(ReSurv)
+library(data.table)
 library(doParallel)
 
 # Function must take the hyper-parameters as inputs
 obj_func <- function(num_layers, num_nodes, optim, activation,lr, xi, eps ) {
-  
-  optim = switch(optim, "Adam", "SGD")
-  activation = switch(activation, "LeakyReLU","SELU")
-  batch_size=as.integer(5000)
-  number_layers=as.integer(num_layers)
-  num_nodes=as.integer(num_nodes)
-  
-  deepsurv_cv <- ReSurvCV(IndividualData=individual_data,
-                    model="deepsurv",
-                    hparameters_grid=list(num_layers = num_layers,
-                                         num_nodes = num_nodes,
-                                         optim=optim,
-                                         activation = activation,
-                                         lr=lr,
-                                         xi=xi,
-                                         eps = eps,
-                                         tie = "Efron",
-                                         batch_size = batch_size,
-                                         early_stopping = 'TRUE',
-                                         patience  = 20
-                    ),
-                    epochs=as.integer(300),
-                    num_workers = 0,      
-                    verbose=F,
-                    verbose.cv=T,
-                    folds=3,
-                    parallel=F,
-                    random_seed = as.integer(Sys.time()))
+
+  optim_name <- switch(as.integer(optim), "Adam", "SGD")
+  activation_name <- switch(as.integer(activation), "LeakyReLU", "SELU")
+  batch_size <- as.integer(5000)
+  num_layers_int <- as.integer(num_layers)
+  num_nodes_int <- as.integer(num_nodes)
+
+  deepsurv_cv <- ReSurvCV(
+    individual_data,
+    model = "NN",
+    hparameters_grid = list(
+      num_layers = num_layers_int,
+      num_nodes = num_nodes_int,
+      optim = optim_name,
+      activation = activation_name,
+      lr = lr,
+      xi = xi,
+      eps = eps,
+      tie = "Efron",
+      batch_size = batch_size,
+      early_stopping = TRUE,
+      patience = 20
+    ),
+    epochs = as.integer(300),
+    num_workers = 0,
+    verbose = FALSE,
+    verbose.cv = TRUE,
+    folds = 3,
+    parallel = FALSE,
+    random_seed = as.integer(Sys.time())
+  )
   
 
   lst <- list(
@@ -66,7 +70,7 @@ cl <- makeCluster(50)
 registerDoParallel(cl)
 
 
-clusterEvalQ(cl, {library("ReSurv")} )
+clusterEvalQ(cl, {library("ReSurv"); library("data.table")} )
 
 
 for (i in seeds){
@@ -76,9 +80,9 @@ for (i in seeds){
                               scenario=0,
                               time_unit = 1/360,
                               years = 4,
-                              yearly_exposure = 200)
-    
-  individual_data <- IndividualData(data = input_data,
+                              period_exposure = 200)
+
+  individual_data <- IndividualDataPP(input_data,
                                     id=NULL,
                                     categorical_features = c("claim_type"),
                                     continuous_features = "AP_i",
